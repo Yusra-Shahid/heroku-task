@@ -11,4 +11,4 @@ const pool = new Pool({
         rejectUnauthorized: false
     }
 })
-module.export = pool;
+module.exports = pool;
