@@ -25,6 +25,12 @@ app.get('/testdb', async (request, response) => {
     response.json({todo:res.rows})
 })
 
+app.get('/taskdone', async (request, response) => {
+  let res = await pool.query('select * from public.todoList WHERE done==true')
+  console.log(res);
+  response.json({todo:res.rows})
+})
+
 // app.get('/testdb',async (request, response) => {
 // let res = await pool.query('select * from public.todoList')
 // console.log(res);
@@ -37,22 +43,29 @@ app.post('/todo/create', async(req,res) => {
   res.json({
     "status":"task created"
   })
+})
 
+app.get('/count', async(req,res) => {
+  let result=await pool.query('select count (*) as total,count (*) FILTER (where done = true) as notNULL ,count (*) FILTER (where done = false) as NULL from public.todoList')
+  console.log(result);
+  res.json({
+  todo:result.rows
+  })
 })
 
 app.put('/todo/update',async(req,res)=>{
-  let result = await pool.query('UPDATE public.todoList SET task = $2 WHERE id = $1'[req.body.id,req.body.task])
+  let result = await pool.query('UPDATE public.todoList SET task = $2 WHERE id = $1',[req.body.id,req.body.task])
   console.log(result);
   res.json({
     "status": "updated"
   })
 })
 
-app.delete('/todo/update',async(req,res)=>{
-  let result = await pool.query('DELETE public.todoList WHERE id = $1'[req.body.id])
+app.delete('/todo/delete',async(req,res)=>{
+  let result = await pool.query('DELETE FROM public.todoList WHERE id = $1',[req.body.id])
   console.log(result);
   res.json({
-    "status": "updated"
+    "status": "deleted"
   })
 })
 
