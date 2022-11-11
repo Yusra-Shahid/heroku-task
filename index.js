@@ -48,16 +48,23 @@ app.post('/todo/create', async(req,res) => {
 app.get('/count', async(req,res) => {
   let result=await pool.query('select count (*) as total,count (*) FILTER (where done = true) as notNULL ,count (*) FILTER (where done = false) as NULL from public.todoList')
   console.log(result);
-  res.json({
-  todo:result.rows
-  })
+  res.json(result.rows)
 })
-
+//SELECT done, COUNT(*) task FROM public.todoList GROUP BY done,id
 app.put('/todo/update',async(req,res)=>{
   let result = await pool.query('UPDATE public.todoList SET task = $2 WHERE id = $1',[req.body.id,req.body.task])
   console.log(result);
   res.json({
     "status": "updated"
+  })
+})
+
+
+app.put('/boolen/update',async(req,res)=>{
+  let result = await pool.query('SELECT done FROM publis.todoList  ')
+  console.log(result);
+  res.json({
+    todo:result.rows
   })
 })
 
