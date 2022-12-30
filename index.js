@@ -6,7 +6,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
-const pool = require('./dbConnection')
+const pool = require('./dbconnection')
 const TodoController = require('./controllers/todoController')
 
 //const TODO_BASE_ROUTE = '/todo';
